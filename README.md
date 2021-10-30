@@ -297,6 +297,120 @@ const simpleMultiply = (a,b) => {
 })();
 ```
 
+## Class (introduced in ES6, syntactical sugar over prototype-based inheritance)
+- template
+- declare once
+- no data in
+
+### class declarations
+```js
+class Person {
+  // constructor
+  constructor(name, age) {
+    // fields
+    this.name = name;
+    this.age = age;
+  }
+  // getter
+  get age() {
+    return this._age;
+  }
+  set age(value) {
+    this._age = value < 0 ? 0 : value;
+  }
+  // setter
+  // methods
+  speak() {
+    console.log(`${this.name}: hello!`);
+  }
+}
+const john = new Person('John', 20);
+console.log(john.name); // John
+console.log(john.age); // 20
+console.log(john.speak()); // John: hello!
+```
+
+### Field
+```js
+class Experiment {
+  publicField = 2;
+  #privateField = 0; // `#` + fieldname
+}
+const experiment = new Experiment();
+console.log(experiment.publicField); // 2
+console.log(experiment.privateField); // undefined
+```
+
+### Static properties and methods
+- Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself.
+- Static methods are often utility functions, such as functions to crate or clone objects, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
+```js
+class Article {
+  static publisher = 'Dream Coding';
+  constructor(articleNumber) {
+    this.articleNumber = articleNumber;
+  }
+  static printPublisher() {
+    console.log(Article.publisher)
+  }
+}
+const article1 = new Article(1);
+const article2 = new Article(2);
+console.log(article1.publisher); // undefined
+console.log(Article.publisher); // Dream Coding
+Article.printPublisher(); // Dream Coding
+```
+
+### Inheritance
+- a way for one class to extend another class
+```js
+class Shape {
+  constructor(width, height, color) {
+    this.width = width;
+    this.height = height;
+    this.color = color;
+  }
+  draw() {
+    console.log(`drawing ${this.color} color`);
+  }
+  getArea() {
+    return this.width * this.height;
+  }
+}
+class Rectangle extends Shape {}
+class Triangle extends Shape {
+  draw() {
+    super.draw();
+    console.log('triangle');
+  }
+  getArea() {
+    return (this.width * this.height) / 2;
+  }
+}
+const rectangle = new Rectangle(20,20,'blue');
+rectangle.draw(); // drawing blue color
+console.log(rectangle.getArea()); // 400
+const triangle = new Triangle(20,20,'red');
+triangle.draw(); // drawing red color
+                 // triangle
+console.log(triangle.getArea()); // 200
+```
+
+### instanceof operator: class checking
+```js
+console.log(rectangle instanceof Rectangle); // true
+console.log(triangle instanceof Rectangle); // false
+console.log(triangle instanceof Triangle); // true
+console.log(triangle instanceof Shape); // true
+console.log(triangle instanceof Object); // true
+```
+
+## object
+- instance of a class
+- created many times
+- data in
+
+
 ## references
 
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/javascript)
