@@ -41,7 +41,7 @@
 - JavaScript is very flexible, so it's dangerous.
 - It also increases the execution speed.
 
-## Variable declare
+## Variable, rw(read/write)
 
 - `let` (added in ES6)
 
@@ -52,14 +52,21 @@
   - var hoisting (move declaration from bottom to top)
   - has no block scope
 
-## Constant
-
+## Constant, r(read only)
+- only you `let` if variable needs to change
 - favor immutable data type always for a few reasons:
   - security
   - thread safety
   - reduce human mistakes
 
+## Data type
+- Immutable data types: primitive types, frozen objects (i.e. `object.freeze()`)
+- Mutable data types: all objects by default are mutable in JS
+
 ## Variable types
+- different methods to store variable
+  - Primitive: Value is saved on a memory
+  - Object: Reference which points the location is saved on a memory
 
 - primitive, single item: number, string, boolean, null, undefined, symbol
   - number - special numeric values: infinity, -infinity, NaN
@@ -99,7 +106,12 @@
   person.age = 30;
   ```
 
-- function (first-class function; function can be allocated to variable)
+- function 
+  - First-class function
+    - functions are treated like any other variable
+    - can be assigned as a value to variable
+    - can be passed as an argument to other functions
+    - can be returned by another function
 
 ## Dynamic typing: dynamically typed language
 
@@ -111,6 +123,178 @@ console.log(`value: ${text}, type: ${typeof text}`); // value: '75', type: strin
 text = '8' / '2';
 console.log(`value: ${text}, type: ${typeof text}`); // value: 4, type: number
 console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a function
+```
+
+## Operator
+
+### Logical operators
+- `||` (or), finds the first truthy value
+- `&&` (and), finds the first falsy value
+  - When using `||` or `&&`, the simplest is first on the condition.
+  - Function or expression needs to be the last.
+  - `&&` often used to compress long if-statement
+    - nullableObject && nullableObject.something
+  ```js
+  const value1 = true;
+  const value2 = 4 < 2;
+  console.log(`or: ${value1 || value2 || check()}`);
+  // Don't write like console.log(`or: ${check() || value1 || value2}`);
+  function check() {
+    for (let i = 0; i < 10; i++) {
+      console.log('checked');
+    }
+    return true;
+  }
+  ```
+- Equality
+  - `==` (loose equality), with type conversion
+  - `===` (strict equality), no type conversion
+  - object equality by reference
+  ```js
+  const obj1 = { value: 'object' };
+  const obj2 = { value: 'object' };
+  const obj3 = obj1;
+  console.log(obj1 == obj2); // false
+  console.log(obj1 === obj2); // false
+  console.log(obj1 === obj3); // true
+  ```
+
+## Function
+- fundamental building block in the program
+- subprogram can be used multiple times
+- performs a task or calculates a value
+- one function === one thing
+- naming: doSomething, command, verb
+- function is object in JS
+
+### Function declaration
+- can be called earlier than it is defined (hoisted)
+```js
+print(); // print
+function print() {
+  console.log('print');
+}
+print(); // print
+```
+
+### Function expression
+- is created when the execution reaches it.
+```js
+print(); // Uncaught ReferenceError: Cannot access 'print' before initialized
+const print = function() { // anonymous function
+  console.log('print');
+};
+print(); // print
+const printAgain = print;
+printAgain();
+```
+
+### Parameters
+- primitive parameters: passed by value
+- object parameters: passed by reference
+```js
+function changeName(obj) {
+  obj.name = 'Bob';
+}
+const john = { name: 'John' };
+changeName(john);
+console.log(john); // {name:"Bob"}
+```
+
+### Default parameters (added in ES6)
+```js
+function showMessage(message, from = 'unknown') {
+  console.log(`${message} by ${from}`);
+}
+showMessage('Hi!'); // Hi! by unknown
+```
+
+### Rest parameters (added in ES6)
+```js
+function printAll(...args) {
+  for (let i = 0; i < args.length; i++) {
+    console.log(args[i]);
+  }
+  for (const arg of args) {
+    console.log(arg);
+  }
+  args.forEach(arg => console.log(arg));
+}
+printAll('Code', 'your', 'dream'); 
+// Code
+// your
+// dream 
+```
+
+### Scope
+```js
+let globalMessage = 'global'; // global variable
+function printMessage() {
+  let message = 'hello'; // local variable
+  console.log(message); // hello
+  console.log(globalMessage); // global
+}
+printMessage();
+console.log(message); // Uncaught ReferenceError: message is not defined
+console.log(globalMessage); // global
+```
+
+### Early return, early exit
+```js
+// bad
+function upgradeUser(user) {
+  if (user.point > 10) {
+    // long upgrade logic...
+  }
+}
+// good
+function upgradeUser(user) {
+  if (user.point <= 10) {
+    return;
+  }
+  // long upgrade logic...
+}
+```
+
+### Callback function using function expression
+```js
+function randomQuiz(answer, printYes, printNo) {
+  if (answer === 'test') {
+    printYes();
+  } else {
+    printNo();
+  }
+}
+// anonymous function
+const printYes = function() {
+  console.log('yes');
+};
+// named function
+  // better debugging in debugger's stack traces
+  // recursions
+const printNo = function print() {
+  console.log('no');
+  print(); // recursion
+};
+randomQuiz('test', printYes, printNo); // yes
+randomQuiz('yes', printYes, printNo); // no
+```
+
+### Arrow function
+- always anonymous
+```js
+const simpleMultiply = (a,b) => {
+  // do something more
+  return a * b;
+}
+```
+
+### IIFE: Immediately Invoked Function Expression
+- `( //function expression )();`
+```js
+(function hello() {
+  console.log('IIFE');
+})();
 ```
 
 ## references
