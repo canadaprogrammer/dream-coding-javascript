@@ -559,10 +559,82 @@ const returnedTarget1 = Object.assign({}, source2);
 console.log(returnedTarget1); // { a: 11, b: 14, c: 15 }, cloning an object
 ```
 
+## Array
+
+### Declaration
+
+```js
+const arr1 = new Array();
+const arr2 = [1, 2];
+```
+
+### Index position
+
+```js
+const fruits = ['apple', 'banana'];
+consol.log(fruits); // (2) ["apple", "banana"]
+consol.log(fruits.length); // 2
+consol.log(fruits[0]); // "apple"
+consol.log(fruits[1]); // "banana"
+consol.log(fruits[2]); // undefined
+consol.log(fruits[fruits.length - 1]); // "banana"
+```
+
+### Looping over an array
+
+```js
+// for
+for (let i = 0; i < fruits.length; i++) {
+  console.log(fruits[i]);
+}
+// for..of
+for (let fruit of fruits) {
+  console.log(fruit);
+}
+// forEach
+fruits.forEach((fruit) => console.log(fruit));
+```
+
+### Addition, deletion, copy
+
+- **Note!! shift and unshift are slower than pop and push.**
+- **push**: add an item to the end
+  - `fruits.push('mango', 'kiwi');`
+- **pop**: remove an item to the end
+  - `fruits.pop();`
+- **unshift**: add an item to the beginning
+  - `fruits.unshift('strawberry');`
+- **shift**: remove an item from the beginning
+  - `fruits.shift(); // "apple", "banana", "mango"`
+- **splice**: remove an item by index position
+  - ```js
+    fruits.splice(1, 1); // splice(startIndex, deleteCount?, item1, item2, itemN);
+    console.log(fruits); // "apple", "mango"
+    fruits.push('grape'); // "apple", "mango", "grape"
+    fruits.splice(1, 1, 'lemon', 'peach');
+    console.log(fruits); // "apple", "lemon", "peach", "grape"
+    ```
+- **concat**: combine two arrays
+  - ```js
+    const fruits2 = ['pear', 'strawberry'];
+    const newFruits = fruits.concat(fruits);
+    console.log(newFruits); // "apple", "lemon", "peach", "grape", "pear", "strawberry"
+    ```
+- Search
+- **indexOf**: find the index
+  - ```js
+    fruits.push('lemon');
+    fruits.indexOf('lemon'); // 1
+    fruits.indexOf('banana'); // -1
+    ```
+- **includes**: check if including the value
+  - ```js
+    fruits.includes('peach'); // true
+    fruits.includes('banana'); // false
+    ```
+- **lastIndexOf**: find the last index
+  - `fruits.lastIndexOf('lemon'); // 6`
+
 ## references
 
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/javascript)
-
-```
-
-```
