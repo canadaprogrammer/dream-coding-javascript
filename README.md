@@ -1,10 +1,10 @@
 # JavaScript Fundamentals
 
-## console
+## debugging
 
-## dev tool
-
-- debugging on Source tab by using break point
+- console
+- dev tool
+  - debugging on Source tab by using break point
 
 ## page loading process
 
@@ -73,12 +73,13 @@
   - Object: Reference which points the location is saved on a memory
 
 - primitive, single item: number, string, boolean, null, undefined, symbol
+
   - number - special numeric values: infinity, -infinity, NaN
-  ```js
-  const infinity = 1 / 0;
-  const negativeInfinity = -1 / 0;
-  const nAn = 'not a number' / 2;
-  ```
+    ```js
+    const infinity = 1 / 0;
+    const negativeInfinity = -1 / 0;
+    const nAn = 'not a number' / 2;
+    ```
   - bigInt: over (-2^53 ~ 2^53)
     - number with `n`
     - `const bigInt = 1234567890123456789012345678901234567890n;`
@@ -93,16 +94,18 @@
   - undefined
     - `let x;` or `let x = undefined;`
   - symbol, create unique identifiers for objects
-  ```js
-  const symbol1 = Symbol('id');
-  const symbol2 = Symbol('id');
-  console.log(symbol1 === symbol2); // false
-  const gSymbol1 = Symbol.for('id');
-  const gSymbol2 = Symbol.for('id');
-  console.log(gSymbol1 === gSymbol2); // true
-  console.log(`value: ${symbol1}, type: ${typeof symbol1}`); // Uncaught TypeError: Cannot convert a Symbol value to a string
-  console.log(`value: ${symbol1.description}, type: ${typeof symbol1}`); // value: id, type: symbol
-  ```
+
+    ```js
+    const symbol1 = Symbol('id');
+    const symbol2 = Symbol('id');
+    console.log(symbol1 === symbol2); // false
+    const gSymbol1 = Symbol.for('id');
+    const gSymbol2 = Symbol.for('id');
+    console.log(gSymbol1 === gSymbol2); // true
+    console.log(`value: ${symbol1}, type: ${typeof symbol1}`); // Uncaught TypeError: Cannot convert a Symbol value to a string
+    console.log(`value: ${symbol1.description}, type: ${typeof symbol1}`); // value: id, type: symbol
+    ```
+
 - object (box container)
 
   ```js
@@ -177,42 +180,42 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
 
 - can be called earlier than it is defined (hoisted)
 
-```js
-print(); // print
-function print() {
-  console.log('print');
-}
-print(); // print
-```
+  ```js
+  print(); // print
+  function print() {
+    console.log('print');
+  }
+  print(); // print
+  ```
 
 ### Function expression
 
 - is created when the execution reaches it.
 
-```js
-print(); // Uncaught ReferenceError: Cannot access 'print' before initialized
-const print = function () {
-  // anonymous function
-  console.log('print');
-};
-print(); // print
-const printAgain = print;
-printAgain();
-```
+  ```js
+  print(); // Uncaught ReferenceError: Cannot access 'print' before initialized
+  const print = function () {
+    // anonymous function
+    console.log('print');
+  };
+  print(); // print
+  const printAgain = print;
+  printAgain();
+  ```
 
 ### Parameters
 
 - primitive parameters: passed by value
 - object parameters: passed by reference
 
-```js
-function changeName(obj) {
-  obj.name = 'Bob';
-}
-const john = { name: 'John' };
-changeName(john);
-console.log(john); // {name:"Bob"}
-```
+  ```js
+  function changeName(obj) {
+    obj.name = 'Bob';
+  }
+  const john = { name: 'John' };
+  changeName(john);
+  console.log(john); // {name:"Bob"}
+  ```
 
 ### Default parameters (added in ES6)
 
@@ -302,22 +305,22 @@ randomQuiz('yes', printYes, printNo); // no
 
 - always anonymous
 
-```js
-const simpleMultiply = (a, b) => {
-  // do something more
-  return a * b;
-};
-```
+  ```js
+  const simpleMultiply = (a, b) => {
+    // do something more
+    return a * b;
+  };
+  ```
 
 ### IIFE: Immediately Invoked Function Expression
 
 - `( //function expression )();`
 
-```js
-(function hello() {
-  console.log('IIFE');
-})();
-```
+  ```js
+  (function hello() {
+    console.log('IIFE');
+  })();
+  ```
 
 ## Class (introduced in ES6, syntactical sugar over prototype-based inheritance)
 
@@ -371,59 +374,59 @@ console.log(experiment.privateField); // undefined
 - Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself.
 - Static methods are often utility functions, such as functions to crate or clone objects, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
 
-```js
-class Article {
-  static publisher = 'Dream Coding';
-  constructor(articleNumber) {
-    this.articleNumber = articleNumber;
+  ```js
+  class Article {
+    static publisher = 'Dream Coding';
+    constructor(articleNumber) {
+      this.articleNumber = articleNumber;
+    }
+    static printPublisher() {
+      console.log(Article.publisher);
+    }
   }
-  static printPublisher() {
-    console.log(Article.publisher);
-  }
-}
-const article1 = new Article(1);
-const article2 = new Article(2);
-console.log(article1.publisher); // undefined
-console.log(Article.publisher); // Dream Coding
-Article.printPublisher(); // Dream Coding
-```
+  const article1 = new Article(1);
+  const article2 = new Article(2);
+  console.log(article1.publisher); // undefined
+  console.log(Article.publisher); // Dream Coding
+  Article.printPublisher(); // Dream Coding
+  ```
 
 ### Inheritance
 
 - a way for one class to extend another class
 
-```js
-class Shape {
-  constructor(width, height, color) {
-    this.width = width;
-    this.height = height;
-    this.color = color;
+  ```js
+  class Shape {
+    constructor(width, height, color) {
+      this.width = width;
+      this.height = height;
+      this.color = color;
+    }
+    draw() {
+      console.log(`drawing ${this.color} color`);
+    }
+    getArea() {
+      return this.width * this.height;
+    }
   }
-  draw() {
-    console.log(`drawing ${this.color} color`);
+  class Rectangle extends Shape {}
+  class Triangle extends Shape {
+    draw() {
+      super.draw();
+      console.log('triangle');
+    }
+    getArea() {
+      return (this.width * this.height) / 2;
+    }
   }
-  getArea() {
-    return this.width * this.height;
-  }
-}
-class Rectangle extends Shape {}
-class Triangle extends Shape {
-  draw() {
-    super.draw();
-    console.log('triangle');
-  }
-  getArea() {
-    return (this.width * this.height) / 2;
-  }
-}
-const rectangle = new Rectangle(20, 20, 'blue');
-rectangle.draw(); // drawing blue color
-console.log(rectangle.getArea()); // 400
-const triangle = new Triangle(20, 20, 'red');
-triangle.draw(); // drawing red color
-// triangle
-console.log(triangle.getArea()); // 200
-```
+  const rectangle = new Rectangle(20, 20, 'blue');
+  rectangle.draw(); // drawing blue color
+  console.log(rectangle.getArea()); // 400
+  const triangle = new Triangle(20, 20, 'red');
+  triangle.draw(); // drawing red color
+  // triangle
+  console.log(triangle.getArea()); // 200
+  ```
 
 ### instanceof operator: class checking
 
@@ -468,30 +471,30 @@ console.log(john.hasJob); // undefined
 - key should be always string
 - If a value of key needs to be received dynamically, it's useful.
 
-```js
-console.log(john.name);
-console.log(john['name']); // computed properties
-john['hasJob'] = true;
+  ```js
+  console.log(john.name);
+  console.log(john['name']); // computed properties
+  john['hasJob'] = true;
 
-function printValue(obj, key) {
-  console.log(obj.key); // undefined
-  console.log(obj[key]); // returned entered key
-}
-printValue(john, 'name'); // John
-printValue(john, 'age'); // 20
-```
+  function printValue(obj, key) {
+    console.log(obj.key); // undefined
+    console.log(obj[key]); // returned entered key
+  }
+  printValue(john, 'name'); // John
+  printValue(john, 'age'); // 20
+  ```
 
 ### Property value shorthand (in ES6)
 
 - If you want to define an object who's keys have the same name as the variables passed-in as properties, you can use the shorthand and simply pass the key name.
 
-```js
-const cat = 'Miaow';
-const dog = 'Woof';
-const bird = 'Peep peep';
-const animals = { cat, dog, bird };
-console.log(animals); // {cat: 'Miaow', dog: 'Woof', bird: 'Peep peep'}
-```
+  ```js
+  const cat = 'Miaow';
+  const dog = 'Woof';
+  const bird = 'Peep peep';
+  const animals = { cat, dog, bird };
+  console.log(animals); // {cat: 'Miaow', dog: 'Woof', bird: 'Peep peep'}
+  ```
 
 ### Constructor function
 
@@ -518,46 +521,46 @@ console.log(person1.hasJob); // undefined
 
 - for (key in obj): It iterates over all enumerable properties of an object that are keyed by strings (ignoring ones keyed by Symbols), including inherited enumerable properties
 
-```js
-for (const key in person1) {
-  console.log(`${key}: ${person1[key]}`); // name: John
-  // age: 30
-}
-```
+  ```js
+  for (const key in person1) {
+    console.log(`${key}: ${person1[key]}`); // name: John
+    // age: 30
+  }
+  ```
 
 - for (value of iterable): It creates a loop iterating over iterable objects, including: built-in String, Array, array-like objects (e.g., arguments or NodeList), TypedArray, Map, Set, and user-defined iterables.
 
-```js
-const iterable = [10, 20, 30];
-for (let value of iterable) {
-  value += 1;
-  console.log(value); // 11
-  // 21
-  // 31
-}
-const iterable_string = 'boo';
-for (const value of iterable_string) {
-  console.log(value); // "b"
-  // "o"
-  // "o"
-}
-```
+  ```js
+  const iterable = [10, 20, 30];
+  for (let value of iterable) {
+    value += 1;
+    console.log(value); // 11
+    // 21
+    // 31
+  }
+  const iterable_string = 'boo';
+  for (const value of iterable_string) {
+    console.log(value); // "b"
+    // "o"
+    // "o"
+  }
+  ```
 
 ### Object.assign()
 
 - This method copies all enumerable own properties from one or more source objects to a target object. It returns the modified target object.
 
-```js
-const target = { a: 1, b: 2 };
-const source = { b: 4, c: 5 };
-const returnedTarget = Object.assign(target, source);
-console.log(target); // { a: 1, b: 4, c: 5 }, Target object itself is changed.
-console.log(source); // { b: 4, c: 5 }
-console.log(returnedTarget); // { a: 1, b: 4, c: 5 }
-const source2 = { a: 11, b: 12 };
-const returnedTarget1 = Object.assign({}, source2);
-console.log(returnedTarget1); // { a: 11, b: 14, c: 15 }, cloning an object
-```
+  ```js
+  const target = { a: 1, b: 2 };
+  const source = { b: 4, c: 5 };
+  const returnedTarget = Object.assign(target, source);
+  console.log(target); // { a: 1, b: 4, c: 5 }, Target object itself is changed.
+  console.log(source); // { b: 4, c: 5 }
+  console.log(returnedTarget); // { a: 1, b: 4, c: 5 }
+  const source2 = { a: 11, b: 12 };
+  const returnedTarget1 = Object.assign({}, source2);
+  console.log(returnedTarget1); // { a: 11, b: 14, c: 15 }, cloning an object
+  ```
 
 ## Array
 
@@ -634,6 +637,63 @@ fruits.forEach((fruit) => console.log(fruit));
     ```
 - **lastIndexOf**: find the last index
   - `fruits.lastIndexOf('lemon'); // 6`
+
+## JSON (JavaScript Object Notation)
+
+- simplest data interchange format
+- lightweight text-based structure
+- easy to read
+- key-value pairs
+- used for serialization and transmission of data between the network connections
+- **independent programming language and platform**
+
+### Object to JSON
+
+- `JSON.stringify(Object, replacer?)`
+
+  ```js
+  let json = JSON.stringify(true);
+  console.log(json); // true
+  json = JSON.stringify(['apple', 'banana']);
+  console.log(json); // ]"apple","banana"]
+  const rabbit = {
+    name: 'tori',
+    color: 'white',
+    size: null,
+    birthDate: new Date(),
+    // symbol: Symbol('id'),
+    jump: function () {
+      console.log(`${this.name} can jump!`);
+    },
+  };
+  json = JSON.stringify(rabbit);
+  console.log(json); // {"name":"tori","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
+  // Symbol and function are not included on JSON
+  json = JSON.stringify(rabbit, ['name', 'color']); // {"name":"tori","color":"white"}
+  json = JSON.stringify(rabbit, (key, value) => {
+    console.log(`key: ${key}, value: ${value}`); // Uncaught TypeError: Cannot convert a Symbol value to a string
+    return key === 'name' ? 'peter' : value;
+  });
+  console.log(json); // {"name":"peter","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
+  ```
+
+### JSON to Object
+
+- `JSON.parse(json, reviver?)`
+
+  ```js
+  const obj = JSON.parse(json);
+  console.log(obj); // {name: "tori", color:"white", size: null, Date: "2021-11-02T19:28:30.670Z"}
+  rabbit.jump(); // tori can jump!
+  obj.jump(); // Uncaught TypeError: obj.jump is not a function, because jump function is not included on obj
+  console.log(rabbit.birthDate.getDate()); // 2
+  console.log(obj.birthDate.getDate()); // Uncaught TypeError: obj.birthDate.getDate is not a function, because obj.birthDate is string
+  const obj1 = JSON.parse(json, (key, value) => {
+    console.log(`key: ${key}, value: ${value}`);
+    return key === 'birthDate' ? new Date(value) : value;
+  });
+  console.log(obj1.birthDate.getDate()); // 2
+  ```
 
 ## references
 

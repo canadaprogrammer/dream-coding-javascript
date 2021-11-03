@@ -118,3 +118,39 @@ const sorted_score2 = students.map(s => s.score).sort((a,b) => b - a).join(', ')
 console.log('A B:', sorted_score);
 console.log('A B:', sorted_score1);
 console.log('A B:', sorted_score2);
+
+let json = JSON.stringify(true);
+console.log(json); // true
+json = JSON.stringify(['apple', 'banana'])
+console.log(json); // ]"apple","banana"]
+const rabbit = {
+  name: 'tori',
+  color: 'white',
+  size: null,
+  birthDate: new Date(),
+  // symbol: Symbol('id'),
+  jump: function() {
+    console.log(`${this.name} can jump!`);
+  },
+};
+json = JSON.stringify(rabbit);
+console.log(json); // {"name":"tori","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
+                   // Symbol and function are not included on JSON
+json = JSON.stringify(rabbit, ['name','color']); // {"name":"tori","color":"white"}
+json = JSON.stringify(rabbit, (key, value) => {
+  console.log(`key: ${key}`);
+  return key === 'name' ? 'peter' : value;
+})
+console.log(json); // {"name":"peter","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
+
+const obj = JSON.parse(json);
+console.log(obj); // {name: "peter", color:"white", size: null, Date: "2021-11-02T19:28:30.670Z"}
+console.log(rabbit); // {name: "peter", color:"white", size: null, Date: "2021-11-02T19:28:30.670Z"}
+rabbit.jump();  // tori can jump!
+console.log(rabbit.birthDate.getDate()); // 2
+console.log(obj.birthDate.getDate()); // Uncaught TypeError
+const obj1 = JSON.parse(json, (key, value) => {
+  console.log(`key: ${key}, value: ${value}`);
+  return key === 'birthDate' ? new Date(value) : value;
+});
+console.log(obj1.birthDate.getDate()); // 2
