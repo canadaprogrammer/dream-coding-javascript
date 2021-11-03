@@ -1,5 +1,27 @@
 # JavaScript Fundamentals
 
+##### Table of Contents
+
+[On Browser](#_browser)
+
+[Grammer and Types](#_grammer)
+
+[Function](#_function)
+
+[Class](#_class)
+
+[Object](#_object)
+
+[Array](#_array)
+
+[JSON](#_json)
+
+[Asynchronous](#_async)
+
+<a name="_browser"/>
+
+# On Browser
+
 ## debugging
 
 - console
@@ -34,6 +56,10 @@
 1. parsing HTML
    1. fetching js
 2. executing js when page is ready
+
+<a name="_grammer"/>
+
+# Grammer and Types
 
 ## Write `'use strict';` at the top of JavaScript file
 
@@ -167,7 +193,9 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   console.log(obj1 === obj3); // true
   ```
 
-## Function
+<a name="_function"/>
+
+# Function
 
 - fundamental building block in the program
 - subprogram can be used multiple times
@@ -176,7 +204,7 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
 - naming: doSomething, command, verb
 - function is object in JS
 
-### Function declaration
+## Function declaration
 
 - can be called earlier than it is defined (hoisted)
 
@@ -188,7 +216,7 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   print(); // print
   ```
 
-### Function expression
+## Function expression
 
 - is created when the execution reaches it.
 
@@ -203,7 +231,7 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   printAgain();
   ```
 
-### Parameters
+## Parameters
 
 - primitive parameters: passed by value
 - object parameters: passed by reference
@@ -217,7 +245,7 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   console.log(john); // {name:"Bob"}
   ```
 
-### Default parameters (added in ES6)
+## Default parameters (added in ES6)
 
 ```js
 function showMessage(message, from = 'unknown') {
@@ -244,7 +272,7 @@ printAll('Code', 'your', 'dream');
 // dream
 ```
 
-### Scope
+## Scope
 
 ```js
 let globalMessage = 'global'; // global variable
@@ -258,7 +286,7 @@ console.log(message); // Uncaught ReferenceError: message is not defined
 console.log(globalMessage); // global
 ```
 
-### Early return, early exit
+## Early return, early exit
 
 ```js
 // bad
@@ -276,7 +304,7 @@ function upgradeUser(user) {
 }
 ```
 
-### Callback function using function expression
+## Callback function using function expression
 
 ```js
 function randomQuiz(answer, printYes, printNo) {
@@ -301,7 +329,7 @@ randomQuiz('test', printYes, printNo); // yes
 randomQuiz('yes', printYes, printNo); // no
 ```
 
-### Arrow function
+## Arrow function
 
 - always anonymous
 
@@ -312,7 +340,7 @@ randomQuiz('yes', printYes, printNo); // no
   };
   ```
 
-### IIFE: Immediately Invoked Function Expression
+## IIFE: Immediately Invoked Function Expression
 
 - `( //function expression )();`
 
@@ -322,13 +350,15 @@ randomQuiz('yes', printYes, printNo); // no
   })();
   ```
 
-## Class (introduced in ES6, syntactical sugar over prototype-based inheritance)
+<a name="_class"/>
+
+# Class (introduced in ES6, syntactical sugar over prototype-based inheritance)
 
 - template
 - declare once
 - no data in
 
-### class declarations
+## class declarations
 
 ```js
 class Person {
@@ -357,7 +387,7 @@ console.log(john.age); // 20
 console.log(john.speak()); // John: hello!
 ```
 
-### Field
+## Field
 
 ```js
 class Experiment {
@@ -369,7 +399,7 @@ console.log(experiment.publicField); // 2
 console.log(experiment.privateField); // undefined
 ```
 
-### Static properties and methods
+## Static properties and methods
 
 - Neither static methods nor static properties can be called on instances of the class. Instead, they're called on the class itself.
 - Static methods are often utility functions, such as functions to crate or clone objects, whereas static properties are useful for caches, fixed-configuration, or any other data you don't need to be replicated across instances.
@@ -391,7 +421,7 @@ console.log(experiment.privateField); // undefined
   Article.printPublisher(); // Dream Coding
   ```
 
-### Inheritance
+## Inheritance
 
 - a way for one class to extend another class
 
@@ -428,7 +458,7 @@ console.log(experiment.privateField); // undefined
   console.log(triangle.getArea()); // 200
   ```
 
-### instanceof operator: class checking
+## instanceof operator: class checking
 
 ```js
 console.log(rectangle instanceof Rectangle); // true
@@ -438,14 +468,16 @@ console.log(triangle instanceof Shape); // true
 console.log(triangle instanceof Object); // true
 ```
 
-## object
+<a name="_object"/>
+
+# object
 
 - one of the JavaScript's data types
 - a collection of related data and/or functionality
 - Nearly all objects in JavaScript are instances of Object.
 - object = { key, value };
 
-### Literals and properties
+## Literals and properties
 
 ```js
 const obj1 = {}; // 'object literal' syntax
@@ -466,7 +498,7 @@ delete john.hasJob;
 console.log(john.hasJob); // undefined
 ```
 
-### Computed properties
+## Computed properties
 
 - key should be always string
 - If a value of key needs to be received dynamically, it's useful.
@@ -484,7 +516,7 @@ console.log(john.hasJob); // undefined
   printValue(john, 'age'); // 20
   ```
 
-### Property value shorthand (in ES6)
+## Property value shorthand (in ES6)
 
 - If you want to define an object who's keys have the same name as the variables passed-in as properties, you can use the shorthand and simply pass the key name.
 
@@ -496,7 +528,7 @@ console.log(john.hasJob); // undefined
   console.log(animals); // {cat: 'Miaow', dog: 'Woof', bird: 'Peep peep'}
   ```
 
-### Constructor function
+## Constructor function
 
 ```js
 function Person(name, age) {
@@ -509,7 +541,7 @@ const person1 = new Person('John', 30);
 console.log(person1); // Person {name: 'John', age: 30}
 ```
 
-### in operator: property existence check (key in obj)
+## in operator: property existence check (key in obj)
 
 ```js
 console.log('name' in person1); // true
@@ -517,7 +549,7 @@ console.log('hasJob' in person1); // false
 console.log(person1.hasJob); // undefined
 ```
 
-### for..in vs for..of
+## for..in vs for..of
 
 - for (key in obj): It iterates over all enumerable properties of an object that are keyed by strings (ignoring ones keyed by Symbols), including inherited enumerable properties
 
@@ -546,7 +578,7 @@ console.log(person1.hasJob); // undefined
   }
   ```
 
-### Object.assign()
+## Object.assign()
 
 - This method copies all enumerable own properties from one or more source objects to a target object. It returns the modified target object.
 
@@ -562,16 +594,18 @@ console.log(person1.hasJob); // undefined
   console.log(returnedTarget1); // { a: 11, b: 14, c: 15 }, cloning an object
   ```
 
-## Array
+<a name="_array"/>
 
-### Declaration
+# Array
+
+## Declaration
 
 ```js
 const arr1 = new Array();
 const arr2 = [1, 2];
 ```
 
-### Index position
+## Index position
 
 ```js
 const fruits = ['apple', 'banana'];
@@ -583,7 +617,7 @@ consol.log(fruits[2]); // undefined
 consol.log(fruits[fruits.length - 1]); // "banana"
 ```
 
-### Looping over an array
+## Looping over an array
 
 ```js
 // for
@@ -598,7 +632,7 @@ for (let fruit of fruits) {
 fruits.forEach((fruit) => console.log(fruit));
 ```
 
-### Addition, deletion, copy
+## Addition, deletion, copy
 
 - **Note!! shift and unshift are slower than pop and push.**
 - **push**: add an item to the end
@@ -638,7 +672,9 @@ fruits.forEach((fruit) => console.log(fruit));
 - **lastIndexOf**: find the last index
   - `fruits.lastIndexOf('lemon'); // 6`
 
-## JSON (JavaScript Object Notation)
+<a name="_json"/>
+
+# JSON (JavaScript Object Notation)
 
 - simplest data interchange format
 - lightweight text-based structure
@@ -647,7 +683,7 @@ fruits.forEach((fruit) => console.log(fruit));
 - used for serialization and transmission of data between the network connections
 - **independent programming language and platform**
 
-### Object to JSON
+## Object to JSON
 
 - `JSON.stringify(Object, replacer?)`
 
@@ -677,7 +713,7 @@ fruits.forEach((fruit) => console.log(fruit));
   console.log(json); // {"name":"peter","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
   ```
 
-### JSON to Object
+## JSON to Object
 
 - `JSON.parse(json, reviver?)`
 
@@ -695,7 +731,9 @@ fruits.forEach((fruit) => console.log(fruit));
   console.log(obj1.birthDate.getDate()); // 2
   ```
 
-## Asynchronous
+<a name="_async"/>
+
+# Asynchronous
 
 - JavaScript is synchronous.
 - Execute the code block in order after hoisting.
@@ -709,7 +747,7 @@ console.log('3');
 // 2
 ```
 
-### Synchronous callback
+## Synchronous callback
 
 ```js
 function printImmediately(print) {
@@ -718,7 +756,7 @@ function printImmediately(print) {
 printImmediately(() => console.log('hello'));
 ```
 
-### Asynchronous callback
+## Asynchronous callback
 
 ```js
 function printWithDelay(print, timeout) {
@@ -749,7 +787,7 @@ printWithDelay(() => console.log('async callback'), 2000); // Asynchronous funct
 // async callback
 ```
 
-### Callback Hell Example
+## Callback Hell Example
 
 ```js
 class UserStorage {
@@ -793,14 +831,14 @@ userStorage.loginUser(
 );
 ```
 
-### Promise
+## Promise
 
 - Promise is a JavaScript object for asynchronous operation.
 - State: pending -> fulfilled or rejected
 - Producer vs Consumer
 - When new Promise is created, the executor is executed automatically.
 
-#### Producer
+### Producer
 
 ```js
 const promise = new Promise((resolve, reject) => {
@@ -813,7 +851,7 @@ const promise = new Promise((resolve, reject) => {
 });
 ```
 
-#### Consumer
+### Consumer
 
 ```js
 promise
@@ -828,7 +866,7 @@ promise
   });
 ```
 
-#### Promise chaining
+### Promise chaining
 
 ```js
 fetchNumber
@@ -842,7 +880,7 @@ fetchNumber
   .then((num) => console.log(num));
 ```
 
-#### Error Handling
+### Error Handling
 
 ```js
 const getHen = () =>
@@ -877,7 +915,7 @@ getHen()
 // bread => fried
 ```
 
-#### Callback to promise
+### Callback to promise
 
 ```js
 class UserStorage1 {
@@ -921,11 +959,11 @@ userStorage
   .catch(console.log);
 ```
 
-### async and await
+## async and await
 
 - clear style of using promise
 
-#### async
+### async
 
 ```js
 // function fetchUser() {
@@ -942,7 +980,7 @@ user.then(console.log); // response
 console.log(user); // Promise {}
 ```
 
-#### await
+### await
 
 ```js
 function delay(ms) {
@@ -987,7 +1025,7 @@ async function pickFruits() {
 pickFruits().then(console.log);
 ```
 
-#### Promise to async & await
+### Promise to async & await
 
 ```js
 // userStorage
@@ -1007,7 +1045,7 @@ async function userAlert() {
 userAlert();
 ```
 
-### useful Promise APIs
+## useful Promise APIs
 
 - `Promise.all`, execute all Promise
 
