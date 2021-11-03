@@ -695,6 +695,340 @@ fruits.forEach((fruit) => console.log(fruit));
   console.log(obj1.birthDate.getDate()); // 2
   ```
 
+## Asynchronous
+
+- JavaScript is synchronous.
+- Execute the code block in order after hoisting.
+
+```js
+console.log('1');
+setTimeout(() => console.log('2'), 1000); // Asynchronous function
+console.log('3');
+// 1
+// 3
+// 2
+```
+
+### Synchronous callback
+
+```js
+function printImmediately(print) {
+  print();
+}
+printImmediately(() => console.log('hello'));
+```
+
+### Asynchronous callback
+
+```js
+function printWithDelay(print, timeout) {
+  setTimeout(print, timeout);
+}
+printWithDelay(() => console.log('async callback'), 2000);
+```
+
+```js
+// JavaScript Working
+// hoisting - the declarations will be the first.
+function printImmediately(print) {
+  print();
+}
+function printWithDelay(print, timeout) {
+  setTimeout(print, timeout);
+}
+console.log('1');
+setTimeout(() => console.log('2'), 1000); // Asynchronous function
+console.log('3');
+printImmediately(() => console.log('hello'));
+printWithDelay(() => console.log('async callback'), 2000); // Asynchronous function
+// the results
+// 1
+// 3
+// hello
+// 2
+// async callback
+```
+
+### Callback Hell Example
+
+```js
+class UserStorage {
+  loginUser(id, password, onSuccess, onError) {
+    setTimeout(() => {
+      if (
+        (id === 'john' && password === 'doe') ||
+        (id === 'bob' && password === 'uncle')
+      ) {
+        onSuccess(id);
+      } else {
+        onError(new Error('not found'));
+      }
+    }, 2000);
+  }
+
+  getRoles(user, onSuccess, onError) {
+    setTimeout(() => {
+      if (user === 'john') {
+        onSuccess({ name: 'john', role: 'admin' });
+      } else {
+        onError(new Error('no authentication'));
+      }
+    }, 1000);
+  }
+}
+
+const userStorage = new UserStorage();
+const id = prompt('Enter your id');
+const password = prompt('Enter your password');
+userStorage.loginUser(
+  id,
+  password,
+  (user) =>
+    userStorage.getRoles(
+      user,
+      (obj) => alert(`Hello ${obj.name}, you have a(n) ${obj.role} role.`),
+      (err) => console.log(err)
+    ),
+  (err) => console.log(err)
+);
+```
+
+### Promise
+
+- Promise is a JavaScript object for asynchronous operation.
+- State: pending -> fulfilled or rejected
+- Producer vs Consumer
+- When new Promise is created, the executor is executed automatically.
+
+#### Producer
+
+```js
+const promise = new Promise((resolve, reject) => {
+  // doing some heavy work (network, read files)
+  console.log('doing something...');
+  setTimeout(() => {
+    // resolve('hello');
+    reject(new Error('no network!'));
+  }, 1000);
+});
+```
+
+#### Consumer
+
+```js
+promise
+  .then((value) => {
+    console.log(value); // 'hello'
+  })
+  .catch((error) => {
+    console.log(error); // Error: no network!
+  })
+  .finally(() => {
+    console.log('finally'); // finally
+  });
+```
+
+#### Promise chaining
+
+```js
+fetchNumber
+  .then((num) => num * 2)
+  .then((num) => num * 3)
+  .then((num) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(num - 1), 1000);
+    });
+  })
+  .then((num) => console.log(num));
+```
+
+#### Error Handling
+
+```js
+const getHen = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve('Hen'), 1000);
+  });
+
+const getEgg = (hen) =>
+  new Promise((resolve, reject) => {
+    // setTimeout(() => resolve(`${hen} => egg`), 1000);
+    setTimeout(() => reject(`error ${hen} => egg`), 1000);
+  });
+
+const cook = (egg) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve(`${egg} => fried`), 1000);
+  });
+
+// getHen()
+// .then(hen => getEgg(hen))
+// .then(egg => cook(egg))
+// .then(fried => console.log(fried));
+
+getHen()
+  .then(getEgg)
+  .catch((error) => {
+    return 'bread';
+  })
+  .then(cook)
+  .then(console.log)
+  .catch(console.log);
+// bread => fried
+```
+
+#### Callback to promise
+
+```js
+class UserStorage1 {
+  loginUser(id, password) {
+    // removed onSuccess, onError
+    return new Promise((resolve, reject) => {
+      // set return with Promise
+      setTimeout(() => {
+        if (
+          (id === 'john' && password === 'doe') ||
+          (id === 'bob' && password === 'uncle')
+        ) {
+          resolve(id); // change onSuccess to resolve
+        } else {
+          reject(new Error('not found')); // change onError to reject
+        }
+      }, 2000);
+    });
+  }
+
+  getRoles(user) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (user === 'john') {
+          resolve({ name: 'john', role: 'admin' });
+        } else {
+          reject(new Error('no authentication'));
+        }
+      }, 1000);
+    });
+  }
+}
+
+const userStorage = new UserStorage1();
+const id = prompt('Enter your id');
+const password = prompt('Enter your password');
+userStorage
+  .loginUser(id, password)
+  .then(userStorage.getRoles)
+  .then((obj) => alert(`Hello ${obj.name}, you have a(n) ${obj.role} role.`))
+  .catch(console.log);
+```
+
+### async and await
+
+- clear style of using promise
+
+#### async
+
+```js
+// function fetchUser() {
+//   return new Promise((resolve, reject) => {
+//     // do network request in 10 secs...
+//     resolve('response');
+//   })
+// }
+async function fetchUser() {
+  return 'response';
+}
+const user = fetchUser();
+user.then(console.log); // response
+console.log(user); // Promise {}
+```
+
+#### await
+
+```js
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+async function getApple() {
+  await delay(2000);
+  // throw 'error';
+  return 'apple';
+}
+async function getBanana() {
+  await delay(1000);
+  return 'banana';
+}
+// function pickFruits() {
+//   return getApple().then((apple) => {
+//     return getBanana().then((banana) => `${apple} + ${banana}`);
+//   });
+// }
+async function pickFruits() {
+  // 3 seconds
+  // try {
+  //   const apple = await getApple(); // 2 second
+  //   const banana = await getBanana(); // after apple, 1 second
+  //   return `${apple} + ${banana}`;
+  // } catch (err) {
+  //   return err;
+  // }
+  // 2 second
+  try {
+    // Promise is executed immediately.
+    // getApple() and getBanana are parallel, so getBanana doesn't need to wait getApple
+    const applePromise = getApple(); // executed
+    const bananaPromise = getBanana(); // executed
+    const apple = await applePromise; // 2 second
+    const banana = await bananaPromise; // without waiting apple, 1 second
+    return `${apple} + ${banana}`;
+  } catch (err) {
+    return err;
+  }
+}
+pickFruits().then(console.log);
+```
+
+#### Promise to async & await
+
+```js
+// userStorage
+//   .loginUser(id,password)
+//   .then(userStorage.getRoles)
+//   .then(obj => alert(`Hello ${obj.name}, you have a(n) ${obj.role} role.`))
+//   .catch(console.log);
+async function userAlert() {
+  try {
+    const login = await userStorage.loginUser(id, password);
+    const user = await userStorage.getRoles(login);
+    return alert(`Hello ${user.name}, you have a(n) ${user.role} role.`);
+  } catch (err) {
+    return console.log(err);
+  }
+}
+userAlert();
+```
+
+### useful Promise APIs
+
+- `Promise.all`, execute all Promise
+
+  ```js
+  function pickAllFruits() {
+    return Promise.all([getApple(), getBanana()]).then((fruits) =>
+      fruits.join(' + ')
+    );
+  }
+  pickAllFruits().then(console.log);
+  ```
+
+- `Promise.race`, return the first finished.
+
+  ```js
+  function pickFirstOne() {
+    return Promise.race([getApple(), getBanana()]);
+  }
+  pickFirstOne().then(console.log);
+  ```
+
 ## references
 
 - [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/javascript)
