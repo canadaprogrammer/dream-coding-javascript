@@ -371,3 +371,12 @@ async function userAlert() {
   }
 }
 userAlert();
+
+const baz = false || 'Guest';
+const tar = false ?? 'Guest';
+console.log(baz, tar);
+
+const array_animal = ['dog','cat','rabbit','horse','dog','rabbit'];
+console.log(new Set(array_animal)); // Set(4) {'dog','cat','rabbit','hours'}
+const unique = [...new Set(array_animal)];
+console.log(unique); // ['dog','cat','rabbit','horse']

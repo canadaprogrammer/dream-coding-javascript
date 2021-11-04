@@ -14,6 +14,8 @@
 
 [Array](#_array)
 
+[Set](#_set)
+
 [JSON](#_json)
 
 [Asynchronous](#_async)
@@ -158,9 +160,11 @@ console.log(`value: ${text}, type: ${typeof text}`); // value: 4, type: number
 console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a function
 ```
 
-## Operator
+<a name="_operator"/>
 
-### Logical operators
+# Operator
+
+## Logical operators
 
 - `||` (or), finds the first truthy value
 - `&&` (and), finds the first falsy value
@@ -192,6 +196,64 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   console.log(obj1 === obj2); // false
   console.log(obj1 === obj3); // true
   ```
+
+## Optional Chaining (in ES11)
+
+- This operator (`?.`) enables you to read the value of a property located deep within a chain of connected objects without having to check that each reference in the chain is valid.
+
+```js
+const person1 = {
+  name: 'John',
+  job: {
+    title: 'web developer',
+    manager: {
+      name: 'Bob',
+    },
+  },
+};
+const person2 = {
+  name: 'Paul',
+};
+function printManager(person) {
+  console.log(person.job.manaer.name);
+}
+printManager(person1); // Bob
+printManager(person2); // Uncaught TypeError: Cannot read property 'manager' of undefined
+
+function printManagerName(person) {
+  console.log(
+    // person.job
+    //   ? person.job.manager
+    //     ? person.job.manager.name
+    //     : undefined
+    //   : undefined
+
+    // person.job && person.job.manager && person.job.manager.name\
+
+    person.job?.manager?.name
+  );
+}
+printManagerName(person1);
+printManagerName(person2);
+```
+
+## Nullish Coalescing Operator (in ES11)
+
+- This operator (`??`) is a logical operator that returns its right-hand side expression when its left-hand side expression is `null` or `undefined`, and otherwise returns its left-hand side expression.
+- This can be contrasted with the `||` (OR), which returns the right-hand side operand if the left operand is any falsy value, not only `null` or `undefined`.
+- falsy value: `null`, `undefined`, `0`, `-0`, `''`, `""`, `false`, `NaN`
+
+```js
+const foo = 0 || 42;
+const bar = 0 ?? 42;
+const baz = '' || 'Guest';
+const tar = '' ?? 'Guest';
+const aaa = false || 'Inactive';
+const bbb = false ?? 'Inactive';
+console.log(foo, bar); // 42, 0
+console.log(baz, tar); // 'Guest', ''
+console.log(aaa, bbb); // 'Inactive', false
+```
 
 <a name="_function"/>
 
@@ -246,6 +308,9 @@ console.log(text.charAt(0)); // Uncaught TypeError: text.charAt is not a functio
   ```
 
 ## Default parameters (added in ES6)
+
+- Default function parameters allow named parameters to be initialized with default values if `no value` or `undefined` is passed.
+- `null` will be used the value.
 
 ```js
 function showMessage(message, from = 'unknown') {
@@ -385,6 +450,37 @@ const john = new Person('John', 20);
 console.log(john.name); // John
 console.log(john.age); // 20
 console.log(john.speak()); // John: hello!
+```
+
+```js
+class Counter {
+  constructor(runEveryFiveTimes) {
+    this.counter = 0;
+    this.callback = runEveryFiveTimes;
+  }
+
+  increase() {
+    this.counter++;
+    console.log(this.counter);
+    if (this.counter % 5 === 0) {
+      // if (this.callback) {
+      //   this.callback(this.counter);
+      // }
+      this.callback && this.callback(this.counter);
+    }
+  }
+}
+
+function alertNum(num) {
+  alert(`alert! ${num}`);
+}
+const coolCounter = new Counter(alertNum);
+coolCounter.increase(); // 1
+coolCounter.increase(); // 2
+coolCounter.increase(); // 3
+coolCounter.increase(); // 4
+coolCounter.increase(); // 5
+// alert! 5
 ```
 
 ## Field
@@ -591,8 +687,47 @@ console.log(person1.hasJob); // undefined
   console.log(returnedTarget); // { a: 1, b: 4, c: 5 }
   const source2 = { a: 11, b: 12 };
   const returnedTarget1 = Object.assign({}, source2);
-  console.log(returnedTarget1); // { a: 11, b: 14, c: 15 }, cloning an object
+  console.log(returnedTarget1); // { a: 11, b: 12 }, cloning an object
   ```
+
+## Spread Syntax (in ES6)
+
+- It's only for iterable objects
+- Objects themselves are not iterable.
+- However, object become iterable when used in an Array, or with iterating functions such as `map()`, `reduce()`, and `assign()`.
+- Cloning and merging of objects is now possible using a shorter syntax than `Object.assign()`.
+
+```js
+const obj1 = { foo: 'aaa', x: 40 };
+const obj2 = { foo: 'bbb', y: 30 };
+
+const cloneObj = { ...obj1 }; // {foo: 'aaa', x: 40};
+const mergedObj = { ...obj1, ...obj2 }; // {foo: 'bbb', x: 40, y: 30}, the value will be overwritten by the latest value of the same key
+const mergedObj = { ...obj1, ...obj2, x: 30 }; // {foo: 'bbb', x: 30, y: 30}, the value will be overwritten by the latest value of the same key
+
+const array = [obj1, obj2];
+const arrayCopy = [...array]; // [{foo:'aaa', x:40}, {foo:'bbb', y:30}]
+const arrayCopy2 = [...array, { bar: 'ccc', z: 20 }]; // [{foo:'aaa', x:40}, {foo:'bbb', y:30}, {bar:'ccc', z:20}]
+obj1.x = 50;
+console.log(array, arrayCopy); // [{foo:'aaa', x:50}, {foo:'bbb', y:30}] [{foo:'aaa', x:50}, {foo:'bbb', y:30}], Object has reference, so the value will be changed to the copy too.
+```
+
+## Destructuring assignment (in ES6)
+
+```js
+const student = {
+  name: 'John',
+  level: 1,
+};
+
+// const name = student.name;
+// const level = student.level;
+
+const { name, level } = student;
+console.log(name, level);
+const { name: studentName, level: studentLevel } = student;
+console.log(studentName, studentLevel);
+```
 
 <a name="_array"/>
 
@@ -671,6 +806,40 @@ fruits.forEach((fruit) => console.log(fruit));
     ```
 - **lastIndexOf**: find the last index
   - `fruits.lastIndexOf('lemon'); // 6`
+
+## Destructuring assignment (in ES6)
+
+```js
+const animals = ['dog', 'cat'];
+
+// const first = animal[0];
+// const second = animal[1];
+
+const [first, second] = animals;
+```
+
+## Spread Syntax (in ES6)
+
+```js
+const array = [1, 2, 3];
+const arrayCopy = [...array]; // [1,2,3]
+const array1 = [4, 5, 6];
+const arrayConcat = [...array, ...array1]; // [1,2,3,4,5,6]
+const newArray = [...array, 4,5 ...array1, 8, 9]; // [1,2,3,4,5,4,5,6,8,9]
+```
+
+<a name="_set"/>
+# Set
+
+- `Set` object lets you store **unique values** of any type, whether primitive values or object references.
+
+```js
+// Remove Duplicates
+const array_animal = ['dog', 'cat', 'rabbit', 'horse', 'dog', 'rabbit'];
+console.log(new Set(array_animal)); // Set {'dog','cat','rabbit','hours'}
+const unique = [...new Set(array_animal)];
+console.log(unique); // ['dog','cat','rabbit','horse']
+```
 
 <a name="_json"/>
 
