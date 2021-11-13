@@ -1,7 +1,7 @@
 'use strick';
 
 const calculate = (command, a, b) => {
-  switch(command) {
+  switch (command) {
     case 'add':
       return a + b;
     case 'subtract':
@@ -13,9 +13,9 @@ const calculate = (command, a, b) => {
     case 'remainder':
       return a % b;
     default:
-      throw Error('unknown command')
+      throw Error('unknown command');
   }
-}
+};
 console.log('add:', calculate('add', 10, 0));
 
 const symbol1 = Symbol('id');
@@ -58,12 +58,12 @@ const fruits_array = fruits_string.split(', ');
 console.log('A2:', fruits_array);
 
 // Q3. make this array look like this: [5,4,3,2,1]
-const array = [1,2,3,4,5];
+const array = [1, 2, 3, 4, 5];
 const reversed = array.reverse(); // the original array is reversed too.
 console.log('A3:', reversed);
 
 // Q4. make new array without the first two elements
-const array1 = [1,2,3,4,5];
+const array1 = [1, 2, 3, 4, 5];
 // const new_array = array1.splice(2); // array1 will be [3,4,5], so it's not the right answer.
 // console.log(new_array);
 const new_array1 = array1.slice(2, 5);
@@ -87,19 +87,25 @@ const students = [
 ];
 
 // Q5. find a student with the score 90
-console.log('A5:', students.find(student => student.score === 90));
+console.log(
+  'A5:',
+  students.find((student) => student.score === 90)
+);
 
 // Q6. make an array of enrolled students
-const enrolled_students = students.filter(student => student.enrolled)
+const enrolled_students = students.filter((student) => student.enrolled);
 console.log('A6:', enrolled_students);
 
 // Q7. make an array containing only the students' scores
 // result should be: [45, 80, 90, 66, 88]
-const scores = students.map(student => student.score);
+const scores = students.map((student) => student.score);
 console.log('A7:', scores);
 
 // Q8. check if there is a student with the score lower than 50
-console.log('A8:', students.some(student => student.score < 50));
+console.log(
+  'A8:',
+  students.some((student) => student.score < 50)
+);
 
 // Q9. compute students' average score
 const total_score = students.reduce((prev, curr) => prev + curr.score, 0);
@@ -107,21 +113,30 @@ const average = total_score / students.length;
 console.log('A9:', average);
 
 // Q10. make a string containing all the scores
-const string_score = students.map(s => s.score).join(', ');
+const string_score = students.map((s) => s.score).join(', ');
 console.log('A10:', string_score);
 
 // Bonus! do Q10 sorted in ascending order
 // result should be: '45, 66, 80, 88, 90'
-const sorted_score = students.map(s => s.score).sort().join(', '); // ASC
-const sorted_score1 = students.map(s => s.score).sort((a,b) => a - b).join(', '); // ASC
-const sorted_score2 = students.map(s => s.score).sort((a,b) => b - a).join(', '); // DESC
+const sorted_score = students
+  .map((s) => s.score)
+  .sort()
+  .join(', '); // ASC
+const sorted_score1 = students
+  .map((s) => s.score)
+  .sort((a, b) => a - b)
+  .join(', '); // ASC
+const sorted_score2 = students
+  .map((s) => s.score)
+  .sort((a, b) => b - a)
+  .join(', '); // DESC
 console.log('A B:', sorted_score);
 console.log('A B:', sorted_score1);
 console.log('A B:', sorted_score2);
 
 let json = JSON.stringify(true);
 console.log(json); // true
-json = JSON.stringify(['apple', 'banana'])
+json = JSON.stringify(['apple', 'banana']);
 console.log(json); // ]"apple","banana"]
 const rabbit = {
   name: 'tori',
@@ -129,24 +144,24 @@ const rabbit = {
   size: null,
   birthDate: new Date(),
   // symbol: Symbol('id'),
-  jump: function() {
+  jump: function () {
     console.log(`${this.name} can jump!`);
   },
 };
 json = JSON.stringify(rabbit);
 console.log(json); // {"name":"tori","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
-                   // Symbol and function are not included on JSON
-json = JSON.stringify(rabbit, ['name','color']); // {"name":"tori","color":"white"}
+// Symbol and function are not included on JSON
+json = JSON.stringify(rabbit, ['name', 'color']); // {"name":"tori","color":"white"}
 json = JSON.stringify(rabbit, (key, value) => {
   console.log(`key: ${key}`);
   return key === 'name' ? 'peter' : value;
-})
+});
 console.log(json); // {"name":"peter","color":"white","size":null,"birthDate":"2021-11-02T19:28:30.670Z"}
 
 const obj = JSON.parse(json);
 console.log(obj); // {name: "peter", color:"white", size: null, Date: "2021-11-02T19:28:30.670Z"}
 console.log(rabbit); // {name: "peter", color:"white", size: null, Date: "2021-11-02T19:28:30.670Z"}
-rabbit.jump();  // tori can jump!
+rabbit.jump(); // tori can jump!
 console.log(rabbit.birthDate.getDate()); // 2
 // console.log(obj.birthDate.getDate()); // Uncaught TypeError
 const obj1 = JSON.parse(json, (key, value) => {
@@ -172,11 +187,11 @@ class UserStorage {
   getRoles(user, onSuccess, onError) {
     setTimeout(() => {
       if (user === 'john') {
-        onSuccess({name: 'john', role: 'admin'});
+        onSuccess({ name: 'john', role: 'admin' });
       } else {
         onError(new Error('no authentication'));
       }
-    }, 1000)
+    }, 1000);
   }
 }
 
@@ -184,16 +199,16 @@ class UserStorage {
 // const id = prompt('Enter your id');
 // const password = prompt('Enter your password');
 // userStorage.loginUser(
-//   id, 
-//   password, 
+//   id,
+//   password,
 //   user => userStorage.getRoles(
-//     user, 
-//     obj => alert(`Hello ${obj.name}, you have a(n) ${obj.role} role.`), 
+//     user,
+//     obj => alert(`Hello ${obj.name}, you have a(n) ${obj.role} role.`),
 //     err => console.log(err)
-//   ), 
+//   ),
 //   err => console.log(err)
 // );
- console.clear();
+console.clear();
 const promise = new Promise((resolve, reject) => {
   // doing some heavy work (network, read files)
   console.log('doing something...');
@@ -204,11 +219,11 @@ const promise = new Promise((resolve, reject) => {
 });
 
 promise
-  .then(value => {
+  .then((value) => {
     console.log(value);
   })
-  .catch(error => {
-    console.log(error)
+  .catch((error) => {
+    console.log(error);
   })
   .finally(() => {
     console.log('finally');
@@ -219,27 +234,27 @@ const fetchNumber = new Promise((resolve, reject) => {
 });
 
 fetchNumber
-  .then(num => num * 2)
-  .then(num => num * 3)
-  .then(num => {
+  .then((num) => num * 2)
+  .then((num) => num * 3)
+  .then((num) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(num - 1), 1000);
     });
   })
-  .then(num => console.log(num));
+  .then((num) => console.log(num));
 
 const getHen = () =>
   new Promise((resolve, reject) => {
     setTimeout(() => resolve('Hen'), 1000);
   });
 
-const getEgg = hen =>
+const getEgg = (hen) =>
   new Promise((resolve, reject) => {
     // setTimeout(() => resolve(`${hen} => egg`), 1000);
     setTimeout(() => reject(`error ${hen} => egg`), 1000);
   });
 
-const cook = egg =>
+const cook = (egg) =>
   new Promise((resolve, reject) => {
     setTimeout(() => resolve(`${egg} => fried`), 1000);
   });
@@ -250,13 +265,13 @@ const cook = egg =>
 // .then(fried => console.log(fried));
 
 getHen()
-.then(getEgg)
-.catch(error => {
-  return 'bread';
-})
-.then(cook)
-.then(console.log)
-.catch(console.log);
+  .then(getEgg)
+  .catch((error) => {
+    return 'bread';
+  })
+  .then(cook)
+  .then(console.log)
+  .catch(console.log);
 
 // promise
 class UserStorage1 {
@@ -272,8 +287,7 @@ class UserStorage1 {
           reject(new Error('not found'));
         }
       }, 2000);
-    })
-    
+    });
   }
 
   getRoles(user) {
@@ -285,14 +299,13 @@ class UserStorage1 {
           reject(new Error('no authentication'));
         }
       }, 1000);
-    })
-    
+    });
   }
 }
 
 const userStorage = new UserStorage1();
-const id = prompt('Enter your id');
-const password = prompt('Enter your password');
+// const id = prompt('Enter your id');
+// const password = prompt('Enter your password');
 // userStorage
 //   .loginUser(id,password)
 //   .then(userStorage.getRoles)
@@ -338,15 +351,15 @@ async function pickFruits() {
   } catch (err) {
     return err;
   }
-
 }
 pickFruits().then(console.log);
 
 // useful Promise APIs
 console.clear();
 function pickAllFruits() {
-  return Promise.all([getApple(), getBanana()])
-    .then(fruits => fruits.join(' + '));
+  return Promise.all([getApple(), getBanana()]).then((fruits) =>
+    fruits.join(' + ')
+  );
 }
 pickAllFruits().then(console.log);
 
@@ -363,10 +376,10 @@ pickFirstOne().then(console.log);
 //   .catch(console.log);
 async function userAlert() {
   try {
-    const login = await userStorage.loginUser(id,password);
+    const login = await userStorage.loginUser(id, password);
     const user = await userStorage.getRoles(login);
     return alert(`Hello ${user.name}, you have a(n) ${user.role} role.`);
-  } catch(err) {
+  } catch (err) {
     return console.log(err);
   }
 }
@@ -376,7 +389,25 @@ const baz = false || 'Guest';
 const tar = false ?? 'Guest';
 console.log(baz, tar);
 
-const array_animal = ['dog','cat','rabbit','horse','dog','rabbit'];
+const array_animal = ['dog', 'cat', 'rabbit', 'horse', 'dog', 'rabbit'];
 console.log(new Set(array_animal)); // Set(4) {'dog','cat','rabbit','hours'}
 const unique = [...new Set(array_animal)];
 console.log(unique); // ['dog','cat','rabbit','horse']
+
+const title = document.querySelector('.title');
+const handleTitleClick = () => {
+  title.innerText = 'Title is clicked';
+};
+
+// title.addEventListener('click', handleTitleClick);
+title.onclick = handleTitleClick;
+
+window.addEventListener('copy', () => {
+  alert('copied');
+});
+window.addEventListener('offline', () => {
+  alert('SOS no WiFi');
+});
+window.addEventListener('online', () => {
+  alert('WiFi connected');
+});

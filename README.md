@@ -20,6 +20,8 @@
 
 [Asynchronous](#_async)
 
+[Event Listener](#_eventListener)
+
 <a name="_browser"/>
 
 # On Browser
@@ -1234,6 +1236,30 @@ userAlert();
     return Promise.race([getApple(), getBanana()]);
   }
   pickFirstOne().then(console.log);
+  ```
+
+<a name="_eventListener">
+
+# Event Listener
+
+- ```js
+  const title = document.querySelector('.title');
+  const handleTitleClick = () => {
+    title.innerText = 'Title is clicked';
+  };
+
+  title.addEventListener('click', handleTitleClick);
+  // title.onclick = handleTitleClick; // the same results
+
+  window.addEventListener('copy', () => {
+    alert('Copied!');
+  });
+  window.addEventListener('offline', () => {
+    alert('SOS no WiFi');
+  });
+  window.addEventListener('online', () => {
+    alert('WiFi connected');
+  });
   ```
 
 ## references
