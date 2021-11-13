@@ -22,6 +22,8 @@
 
 [Event Listener](#_eventListener)
 
+[Timeout and Interval](#_timeout_and_interval)
+
 <a name="_browser"/>
 
 # On Browser
@@ -1238,7 +1240,7 @@ userAlert();
   pickFirstOne().then(console.log);
   ```
 
-<a name="_eventListener">
+<a name="_eventListener" />
 
 # Event Listener
 
@@ -1261,6 +1263,51 @@ userAlert();
     alert('WiFi connected');
   });
   ```
+
+<a name="_timeout_and_interval" />
+
+# Timeouts and Intervals
+
+- `setTimeout(fn, milliseconds)`: execute a specified block of code once after a specified time has elapsed.
+  - Any parameters that you want to pass to the function being run inside the `setTimeout()` must be passed to it as additional parameters at the end of the list.
+  ```js
+  function sayHi(who) {
+    alert(`Hello ${who}`);
+  }
+  let myGreeting = setTimeout(sayHi, 2000, 'Mr. Universe');
+  ```
+- `setInterval(fn, milliseconds)`: execute a specified block of code repeatedly with a fixed time delay between each call
+
+- The specified time (or the delay) is not the guaranteed time to execution, but rather the minimum time to execution. It will execute as soon as the stack is empty.
+
+## Cancel it
+
+- `clearTimeout()`, `clearInterval()`
+- `clearTimeout()` and `clearInterval()` both use the same list of entries to clear from. Interestingly enough, this means you can use either method to clear a `setTimeout()` or `setInterval()`.
+- For consistency, you should use `clearTimeout()` to clear `setTimeout()` entries and `clearInterval()` to clear `setInterval()` entries.
+
+## Recursive timeouts
+
+- You can call `setTimeout()` recursively to run the same code repeatedly, instead of using `setInterval()`.
+
+```js
+let i = 1;
+setTimeout(function run() {
+  console.log(i);
+  i++;
+  setTimeout(run, 100);
+}, 100);
+let j = 1;
+setInterval(function run() {
+  console.log(j);
+  j++;
+}, 100);
+```
+
+- The difference between recursive `setTimeout()` and `setInterval()` is a subtle one.
+  - Recursive `setTimeout()` guarantees the given delay between the code execution completion and the next call.
+  - The interval of `setInterval()` includes the time taken to execute the code you want to run in.
+- **When your code has the potential to take longer to run than the time interval you've assigned, it's better to use recursive `setTimeout()` - this will keep the time interval constant between executions regardless of how long the code takes to execute, and you won't get errors.**
 
 ## references
 
