@@ -4,7 +4,7 @@
 
 [On Browser](#_browser)
 
-[Grammer and Types](#_grammer)
+[Grammar and Types](#_grammar)
 
 [Function](#_function)
 
@@ -63,9 +63,9 @@
    1. fetching js
 2. executing js when page is ready
 
-<a name="_grammer"/>
+<a name="_grammar"/>
 
-# Grammer and Types
+# Grammar and Types
 
 ## Write `'use strict';` at the top of JavaScript file
 
@@ -219,7 +219,7 @@ const person2 = {
   name: 'Paul',
 };
 function printManager(person) {
-  console.log(person.job.manaer.name);
+  console.log(person.job.manager.name);
 }
 printManager(person1); // Bob
 printManager(person2); // Uncaught TypeError: Cannot read property 'manager' of undefined
